@@ -1,0 +1,135 @@
+{
+  "model_default": "gemma4:12b",
+  "notes": "Canonical task manifest for the PM workbench. modality: text|image|audio|video. input: path relative to project root (text inputs are inlined; media are passed natively / as frames). hero=true marks the 7 prompts also run head-to-head against Claude Opus 4.8. ALL inputs are synthetic/self-generated — safe to publish.",
+  "tasks": [
+    {
+      "id": "dw1", "category": "01_daily_workflows", "modality": "text", "hero": true,
+      "title": "Stakeholder update email",
+      "prompt": "You are a senior product manager. Write a concise weekly stakeholder update email (subject + body, under 200 words, scannable) from these raw notes:\n- shipped CSV export (beta) to 12 design partners\n- onboarding flow A/B test: variant B +9% activation, rolling to 100%\n- API rate-limit incident Tue, 40 min, root-caused, fix shipped\n- hiring: backend role still open, 2 onsites this week\n- risk: data-migration for EU tenants slipping ~1 week\nUse a confident but honest tone. End with one clear ask."
+    },
+    {
+      "id": "dw2", "category": "01_daily_workflows", "modality": "text",
+      "title": "Messy notes -> action items table",
+      "prompt": "Turn the messy meeting notes below into a clean Markdown action-items table with columns: Action | Owner | Due | Priority. Infer owners/priority where reasonable and flag anything ambiguous in a short note under the table.",
+      "input": "inputs/docs/messy_notes.md"
+    },
+    {
+      "id": "dw3", "category": "01_daily_workflows", "modality": "text",
+      "title": "Rewrite blunt Slack msg for execs",
+      "prompt": "Rewrite this blunt internal Slack message so it's appropriate for a message to the VP of Product — clear, calm, solution-oriented, no blame. Keep it short. Original: 'eng totally dropped the ball on the launch, the dashboard is broken AGAIN and nobody told sales. this is the third time. we look incompetent.'"
+    },
+    {
+      "id": "dw4", "category": "01_daily_workflows", "modality": "text",
+      "title": "RICE prioritization",
+      "prompt": "Act as a PM and prioritize these 5 features using RICE (Reach, Impact, Confidence, Effort). Make reasonable assumptions, show the RICE table with scores, and recommend the top 2 with one-line rationale.\nFeatures: (1) SSO/SAML login, (2) bulk CSV import, (3) dark mode, (4) in-app notifications, (5) audit log export."
+    },
+
+    {
+      "id": "or1", "category": "02_orchestration", "modality": "text", "hero": true,
+      "title": "Goal -> plan -> JSON tasks -> risks",
+      "prompt": "Goal: launch a self-serve free trial for our B2B SaaS in 6 weeks.\nDo THREE things in order, with clear headers:\n1) A short phased plan (weeks 1-6).\n2) A machine-readable JSON array of work items, each: {\"id\", \"title\", \"owner_role\", \"week\", \"depends_on\"}. Output valid JSON only in this section, inside a ```json fenced block.\n3) A risk table (Risk | Likelihood | Impact | Mitigation)."
+    },
+    {
+      "id": "or2", "category": "02_orchestration", "modality": "text",
+      "title": "Strict JSON extraction (schema)",
+      "prompt": "Extract structured data from the text and return ONLY valid JSON matching this schema (no prose): {\"company\": string, \"contact\": {\"name\": string, \"email\": string}, \"plan\": \"free\"|\"pro\"|\"enterprise\", \"seats\": number, \"renewal_month\": string}.\nText: 'Hi, this is Dana Okafor from Brightwave Health (dana.okafor@brightwave.example). We're on the Pro plan with 45 seats and our renewal is in November.'"
+    },
+    {
+      "id": "or3", "category": "02_orchestration", "modality": "text",
+      "title": "Tool-routing decision (agentic)",
+      "prompt": "You are an agent with these tools: search_docs(query), create_ticket(title, severity), send_email(to, subject, body). A user says: 'The billing page returns a 500 error for all enterprise customers since this morning — please get someone on it and let finance know.' Decide which tool calls to make and in what order. Output a JSON array of calls: [{\"tool\", \"args\"}]. Then one sentence explaining your reasoning."
+    },
+
+    {
+      "id": "lc1", "category": "03_light_coding", "modality": "text", "hero": true,
+      "title": "Python: parse CSV + chart",
+      "prompt": "Write a single, runnable Python script (stdlib + matplotlib only) that reads the CSV below, prints the top 3 products by total revenue, and saves a bar chart of revenue by product to 'revenue.png'. Include brief comments. The CSV is provided as INPUT.",
+      "input": "inputs/docs/sample_sales.csv"
+    },
+    {
+      "id": "lc2", "category": "03_light_coding", "modality": "text",
+      "title": "SQL from schema",
+      "prompt": "Given tables users(id, signup_date, plan) and events(user_id, name, ts), write a PostgreSQL query returning, for each plan, the 7-day activation rate: % of users who fired an event named 'activated' within 7 days of signup. Explain the query in 2 sentences."
+    },
+    {
+      "id": "lc3", "category": "03_light_coding", "modality": "text",
+      "title": "Explain + refactor snippet",
+      "prompt": "Explain what this Python does in plain English (2 sentences), name one bug or risk, then give a cleaner refactor:\n\ndef f(l):\n  r=[]\n  for i in range(len(l)):\n    if l[i] not in r: r.append(l[i])\n  return r"
+    },
+    {
+      "id": "lc4", "category": "03_light_coding", "modality": "text",
+      "title": "Regex + test cases",
+      "prompt": "Write a regular expression that matches order IDs of the form 'ORD-' followed by exactly 8 digits, optionally suffixed with '-R' for returns (e.g., ORD-12345678 or ORD-12345678-R). Provide the regex, then 4 should-match and 4 should-not-match examples in a table."
+    },
+
+    {
+      "id": "sum1", "category": "04_summarizing", "modality": "text", "hero": true,
+      "title": "Summarize long PRD (256K ctx)",
+      "prompt": "You are a PM lead reviewing a long PRD. Produce: (1) a 4-sentence TL;DR, (2) Key Decisions as bullets, (3) Open Risks/Questions as bullets, (4) one 'what's missing' observation. Be specific and cite section names where possible.",
+      "input": "inputs/docs/long_prd.md"
+    },
+    {
+      "id": "sum2", "category": "04_summarizing", "modality": "text",
+      "title": "Condense support thread",
+      "prompt": "Summarize this customer support thread into: Current status (1 line), Root cause if known, Next step + owner, and Customer sentiment (positive/neutral/negative with a short reason).",
+      "input": "inputs/docs/support_thread.md"
+    },
+    {
+      "id": "sum3", "category": "04_summarizing", "modality": "text",
+      "title": "Extract decisions from transcript",
+      "prompt": "From this meeting transcript, extract: Decisions made (bullets), Action items (Owner -> task -> due if mentioned), and any Parking-lot/Deferred items. Ignore small talk.",
+      "input": "inputs/docs/meeting_transcript.md"
+    },
+
+    {
+      "id": "vi1", "category": "05_vision_image", "modality": "image", "hero": true,
+      "title": "Read dashboard screenshot -> KPIs",
+      "prompt": "This is a screenshot of a product metrics dashboard. Read it and report: each KPI with its value and trend, the single most concerning number and why, and one recommended action. Be precise about the numbers you see.",
+      "input": "inputs/images/dashboard.png"
+    },
+    {
+      "id": "vi2", "category": "05_vision_image", "modality": "image",
+      "title": "Chart -> data table",
+      "prompt": "Extract the data shown in this bar chart into a Markdown table (Category | Value). Then state which category is highest and the approximate total.",
+      "input": "inputs/images/chart.png"
+    },
+    {
+      "id": "vi3", "category": "05_vision_image", "modality": "image",
+      "title": "OCR a scanned memo",
+      "prompt": "Transcribe all the text visible in this scanned memo image exactly, then give a one-line summary of what it asks the reader to do.",
+      "input": "inputs/images/scanned_memo.png"
+    },
+    {
+      "id": "vi4", "category": "05_vision_image", "modality": "image",
+      "title": "Critique a UI mockup",
+      "prompt": "This is a mockup of a mobile app screen. Describe the screen, identify 3 specific usability or visual issues, and suggest a concrete fix for each.",
+      "input": "inputs/images/ui_mock.png"
+    },
+
+    {
+      "id": "au1", "category": "06_audio", "modality": "audio", "hero": true,
+      "title": "Voice memo -> summary + actions",
+      "prompt": "Transcribe this voice memo, then give a 2-sentence summary and a bulleted list of any action items with owners if mentioned.",
+      "input": "inputs/audio/voice_memo.wav"
+    },
+    {
+      "id": "au2", "category": "06_audio", "modality": "audio",
+      "title": "2-speaker clip -> diarized + decision",
+      "prompt": "This clip has two speakers. Produce a diarized transcript labeling 'Speaker A' and 'Speaker B', then state the decision they reached in one sentence.",
+      "input": "inputs/audio/two_speaker.wav"
+    },
+
+    {
+      "id": "vd1", "category": "07_video", "modality": "video", "hero": true,
+      "title": "Summarize screen-demo video",
+      "prompt": "These frames are sampled from a short product demo recording. Describe what is being shown step by step, then write a 2-sentence summary a PM could paste into release notes.",
+      "input": "inputs/video/demo.mp4"
+    },
+    {
+      "id": "vd2", "category": "07_video", "modality": "video",
+      "title": "List features shown in video",
+      "prompt": "From these video frames, list every distinct feature name or screen title you can read on screen, in the order they appear.",
+      "input": "inputs/video/demo.mp4"
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+Q: What did we decide about the free-trial credit-card requirement, and what is the single biggest risk to the launch?
+Embedding 22 chunks from docs/ …
+
+💬 The team decided on a 14-day trial with no credit card required [meeting_transcript.md#0]. The context does not identify a single largest risk; instead, it lists five risks: R1 (Low activation), R2 (Cannibalization of enterprise deals), R3 (Abuse/free-tier farming), R4 (Legal exposure), and R5 (Billing edge cases) [long_prd.md#9].
+
+— sources: long_prd.md, meeting_transcript.md · 124.81s · local + private

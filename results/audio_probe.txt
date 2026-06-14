@@ -1,0 +1,27 @@
+
+========== AUDIO PROBE RESULTS ==========
+
+### v1 input_audio  ->  ✅ WORKS (keyword score=7)
+Hey team, quick voice memo after the BrightWave call. They're happy with the billing fix, but they want CSV export for invoices by the end of the month. Priya, can you scope that this week? Also, let's add "Invoice Page Latency" to our monitoring so we catch this earlier next time. I'll update the roadmap doc. Thanks.
+
+### api/chat audio[dict]  ->  ⚠️ ignored/empty (keyword score=0)
+Please provide the audio file, video link, or text passage you would like me to transcribe! Once you provide it, I will transcribe it word-for-word for you.
+
+### api/chat audios[b64]  ->  ⚠️ ignored/empty (keyword score=0)
+Please provide the **audio file, video link, or image** you would like me to transcribe. 
+
+Once you provide the source, I will transcribe it word-for-word for you.
+
+### CLI path  ->  ✅ WORKS (keyword score=1)
+Thinking...
+*   Input: A request to transcribe a specific audio file (`inputs/audio/voi[18D[K
+(`inputs/audio/voice_memo.wav`) word for word.
+    *   Constraint: I am an AI text model and do not have direct access to [K
+the user's local file system or external storage locations like `inputs/aud[11D[K
+`inputs/audio/` unless the file is uploaded directly to the chat interface [K
+(if the platform supports it).
+
+    *   The user has provided a path (`inputs/audio/voice_memo.wav`) but I [K
+cann
+
+========== END ==========

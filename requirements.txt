@@ -1,0 +1,17 @@
+# Gemma 4 12B PM Workbench — Python dependencies
+# Install into a venv with uv (recommended) or pip. See README.md "Setup".
+#
+#   uv venv --python 3.12 && source .venv/bin/activate && uv pip install -r requirements.txt
+#
+gradio>=5.0          # interactive PM workbench UI (app.py)
+pillow>=10.0         # synthetic image / slide generation (make_inputs.py)
+matplotlib>=3.7      # synthetic chart / dashboard images (make_inputs.py)
+#
+# NOTE: the core client (gemma_client.py) and the batch runner (run_eval.py)
+# use only the Python standard library (urllib / json / base64) to talk to
+# Ollama on localhost — no 'requests' needed. Everything stays on your machine.
+#
+# Optional audio backends — install ONLY if Phase A testing shows your local
+# runtime needs them for native audio (see README "Audio understanding"):
+#   mlx-whisper        # fully-local ASR (Apple Silicon) — transcript fallback
+#   mlx-vlm            # MLX multimodal runtime for native Gemma 4 audio

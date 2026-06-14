@@ -1,0 +1,23 @@
+task_id,category,title,modality,think,ok,latency_s,prompt_tokens,output_tokens,tokens_per_s,hero
+dw1,01_daily_workflows,Stakeholder update email,text,,True,30.17,151,1282,43.5,True
+dw2,01_daily_workflows,Messy notes -> action items table,text,,True,45.74,467,1784,40.4,False
+dw3,01_daily_workflows,Rewrite blunt Slack msg for execs,text,,True,35.47,83,1046,30.0,False
+dw4,01_daily_workflows,RICE prioritization,text,,True,76.85,102,1617,21.3,False
+or1,02_orchestration,Goal -> plan -> JSON tasks -> risks,text,,True,72.19,127,1600,22.4,True
+or2,02_orchestration,Strict JSON extraction (schema),text,,True,18.92,121,463,25.5,False
+or3,02_orchestration,Tool-routing decision (agentic),text,,True,52.33,113,1338,25.9,False
+lc1,03_light_coding,Python: parse CSV + chart,text,,True,57.58,454,1512,27.1,True
+lc2,03_light_coding,SQL from schema,text,,True,51.82,83,1335,26.1,False
+lc3,03_light_coding,Explain + refactor snippet,text,,True,24.97,85,631,26.0,False
+lc4,03_light_coding,Regex + test cases,text,,True,41.24,98,987,24.4,False
+sum1,04_summarizing,Summarize long PRD (256K ctx),text,,True,71.89,2502,1456,23.4,True
+sum2,04_summarizing,Condense support thread,text,,True,34.47,711,719,22.9,False
+sum3,04_summarizing,Extract decisions from transcript,text,,True,39.9,656,830,22.5,False
+vi1,05_vision_image,Read dashboard screenshot -> KPIs,image+text,,True,92.31,314,1951,21.3,True
+vi2,05_vision_image,Chart -> data table,image+text,,True,18.75,306,378,22.3,False
+vi3,05_vision_image,OCR a scanned memo,image+text,,True,17.86,299,364,22.6,False
+vi4,05_vision_image,Critique a UI mockup,image+text,,True,49.68,177,1084,22.4,False
+au1,06_audio,Voice memo -> summary + actions,audio+text,,True,35.45,,743,21.0,True
+au2,06_audio,2-speaker clip -> diarized + decision,audio+text,,True,19.4,,413,21.3,False
+vd1,07_video,Summarize screen-demo video,video(12f+audio),,True,53.22,,722,13.6,True
+vd2,07_video,List features shown in video,video(12f+audio),,True,30.43,,285,9.4,False

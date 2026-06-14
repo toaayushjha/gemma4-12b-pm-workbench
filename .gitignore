@@ -1,0 +1,18 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# download-log noise
+results/pull.log
+results/embed_pull.log
+results/eval_run.log
+
+# macOS
+.DS_Store
+
+# Kept on purpose (they ARE the deliverable / evidence):
+#   results/results.md, results/results.csv, results/run_log.jsonl
+#   results/findings.md, results/audio_probe.txt, results/rag_demo.txt
+#   audio_probe.py (documents the /v1 audio discovery)
+#   prompts/, inputs/ (synthetic media), scoring/, comparison/, blog/, docs/

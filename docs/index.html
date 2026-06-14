@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gemma 4 12B — a PM's local AI workbench</title>
+<meta name="description" content="Can a free, 100% on-device open model replace the cloud LLM a PM uses daily? A hands-on evaluation of Gemma 4 12B vs Claude Opus 4.8 on a MacBook Pro.">
+<style>
+  :root{
+    --ink:#15171c; --muted:#5b6573; --line:#e6e9ef; --bg:#ffffff; --soft:#f6f8fb;
+    --accent:#4f46e5; --accent-soft:#eef0fe; --green:#0f8a4f; --green-bg:#e7f6ee;
+    --amber:#b8860b; --amber-bg:#fbf3df; --blue:#1a73e8;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+  .wrap{max-width:880px;margin:0 auto;padding:0 22px}
+  a{color:var(--accent);text-decoration:none} a:hover{text-decoration:underline}
+  header{background:linear-gradient(160deg,#f4f5ff,#ffffff 60%);border-bottom:1px solid var(--line)}
+  header .wrap{padding:64px 22px 40px}
+  .kicker{font-weight:700;color:var(--accent);letter-spacing:.04em;text-transform:uppercase;font-size:13px}
+  h1{font-size:40px;line-height:1.12;margin:.3em 0 .25em;letter-spacing:-.02em}
+  .sub{font-size:19px;color:var(--muted);max-width:42em;margin:0 0 26px}
+  .badges{display:flex;flex-wrap:wrap;gap:10px}
+  .badge{background:#fff;border:1px solid var(--line);border-radius:999px;padding:8px 14px;font-size:14px;font-weight:600;box-shadow:0 1px 2px rgba(20,23,28,.04)}
+  .badge b{color:var(--accent)}
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:26px;letter-spacing:-.01em;margin:0 0 16px}
+  h3{font-size:18px;margin:26px 0 8px}
+  p{color:#23262d}
+  .lead{font-size:18px}
+  table{width:100%;border-collapse:collapse;margin:8px 0;font-size:15px}
+  th,td{text-align:left;padding:11px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{background:var(--soft);font-size:13px;text-transform:uppercase;letter-spacing:.03em;color:var(--muted)}
+  .pill{display:inline-block;border-radius:999px;padding:3px 10px;font-size:12.5px;font-weight:700;white-space:nowrap}
+  .p-green{background:var(--green-bg);color:var(--green)} .p-amber{background:var(--amber-bg);color:var(--amber)}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .card{background:var(--soft);border:1px solid var(--line);border-radius:14px;padding:18px 20px}
+  .card.win{background:var(--green-bg);border-color:#bfe6cf}
+  .card.opus{background:#eaf1fe;border-color:#cfe0fb}
+  .card h3{margin-top:0}
+  .card ul{margin:.3em 0 0;padding-left:1.1em} .card li{margin:.35em 0}
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:6px}
+  .stat{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px;text-align:center}
+  .stat .n{font-size:30px;font-weight:800;color:var(--accent);letter-spacing:-.02em}
+  .stat .l{font-size:13px;color:var(--muted);margin-top:2px}
+  .chart{margin-top:10px}
+  .bar{display:grid;grid-template-columns:84px 1fr 64px;align-items:center;gap:12px;margin:9px 0}
+  .bar .t{font-size:14px;color:var(--muted);text-align:right}
+  .track{background:#eef1f6;border-radius:8px;height:22px;overflow:hidden}
+  .fill{height:100%;background:linear-gradient(90deg,#6366f1,#4f46e5);border-radius:8px}
+  .bar .v{font-size:14px;font-weight:700}
+  figure{margin:18px 0 0} figure img{width:100%;border:1px solid var(--line);border-radius:12px;display:block}
+  figcaption{font-size:13px;color:var(--muted);margin-top:8px}
+  .note{font-size:14px;color:var(--muted)}
+  blockquote{margin:14px 0;padding:12px 18px;background:var(--accent-soft);border-left:4px solid var(--accent);border-radius:0 10px 10px 0}
+  footer{padding:40px 0 70px;color:var(--muted);font-size:14px}
+  .cta{display:inline-block;background:var(--accent);color:#fff;font-weight:700;padding:12px 20px;border-radius:10px;margin-top:6px}
+  .cta:hover{text-decoration:none;opacity:.93}
+  @media(max-width:680px){.grid2,.stats{grid-template-columns:1fr 1fr}h1{font-size:32px}.stats{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+
+<header><div class="wrap">
+  <div class="kicker">Local-LLM field test · June 2026</div>
+  <h1>I ran a frontier open model 100% on my laptop — here's what it can replace.</h1>
+  <p class="sub">A product manager's hands-on evaluation of Google's brand-new
+    <b>Gemma 4 12B</b> against the cloud model I use daily, <b>Claude Opus 4.8</b> —
+    across writing, orchestration, coding, summarizing, and image / audio / video. Free,
+    private, offline. No prior local-model experience.</p>
+  <div class="badges">
+    <span class="badge"><b>$0</b> cost</span>
+    <span class="badge"><b>100%</b> on-device</span>
+    <span class="badge"><b>22/22</b> tasks passed</span>
+    <span class="badge">native <b>audio + video</b></span>
+    <span class="badge">MacBook Pro <b>M4 Max</b></span>
+  </div>
+</div></header>
+
+<section><div class="wrap">
+  <h2>TL;DR</h2>
+  <p class="lead">A 12B open model on a laptop handled the <b>large majority of everyday
+    PM work at a quality I'd genuinely ship</b> — including the parts I expected to fail:
+    reading a KPI dashboard, transcribing and <b>diarizing</b> audio, and summarizing a
+    video. The real cost isn't quality — it's <b>latency</b> (30–90s on heavy tasks) and
+    the need to <b>verify</b> code and extracted facts.</p>
+  <div class="stats">
+    <div class="stat"><div class="n">22/22</div><div class="l">tasks succeeded</div></div>
+    <div class="stat"><div class="n">~27</div><div class="l">tok/s (text)</div></div>
+    <div class="stat"><div class="n">$0</div><div class="l">total cost</div></div>
+    <div class="stat"><div class="n">0 KB</div><div class="l">data sent off-device</div></div>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <h2>The verdict map</h2>
+  <p>Per category: is local Gemma 4 12B good enough to use instead of Opus?
+    <span class="pill p-green">Use local</span>
+    <span class="pill p-amber">With caveats</span></p>
+  <table>
+    <tr><th>Category</th><th>Verdict</th><th>Why</th></tr>
+    <tr><td><b>Daily workflows</b><br><span class="note">emails, notes→actions, RICE</span></td><td><span class="pill p-green">Use local</span></td><td>Nailed structure & tone; even flagged ambiguous task owners.</td></tr>
+    <tr><td><b>Orchestration</b><br><span class="note">multi-step, JSON, tool routing</span></td><td><span class="pill p-green">Use local</span></td><td>Clean JSON-schema adherence; sensible tool calls. Validate JSON in prod.</td></tr>
+    <tr><td><b>Light coding</b><br><span class="note">Python, SQL, refactor, regex</span></td><td><span class="pill p-amber">With caveats</span></td><td>Correct & idiomatic for snippets (nailed an O(n²)→fix). Verify before running.</td></tr>
+    <tr><td><b>Summarizing</b><br><span class="note">PRD, threads, transcripts</span></td><td><span class="pill p-green">Use local</span></td><td>Best category — accurate, <b>cited section IDs</b>, found a real gap. 256K context.</td></tr>
+    <tr><td><b>Vision</b><br><span class="note">dashboards, charts, OCR</span></td><td><span class="pill p-green">Use local</span></td><td>Read exact KPI values; chart→table with correct total; near-perfect OCR.</td></tr>
+    <tr><td><b>Audio</b> ⭐<br><span class="note">transcribe, diarize</span></td><td><span class="pill p-green">Use local</span></td><td>The surprise: accurate transcription + Speaker A/B diarization, on-device, ~20–35s.</td></tr>
+    <tr><td><b>Video</b><br><span class="note">screen-demo summary</span></td><td><span class="pill p-amber">With caveats</span></td><td>Great on slide-style content (frames + audio); motion lost at 1 FPS; slowest.</td></tr>
+  </table>
+</div></section>
+
+<section><div class="wrap">
+  <h2>Speed by modality</h2>
+  <p class="note">Generation speed (tokens/sec) — text is snappy; multimodal pays a tax.</p>
+  <div class="chart">
+    <div class="bar"><div class="t">Text</div><div class="track"><div class="fill" style="width:90%"></div></div><div class="v">27 tok/s</div></div>
+    <div class="bar"><div class="t">Image</div><div class="track"><div class="fill" style="width:73%"></div></div><div class="v">22 tok/s</div></div>
+    <div class="bar"><div class="t">Audio</div><div class="track"><div class="fill" style="width:70%"></div></div><div class="v">21 tok/s</div></div>
+    <div class="bar"><div class="t">Video</div><div class="track"><div class="fill" style="width:38%"></div></div><div class="v">11 tok/s</div></div>
+  </div>
+  <p class="note" style="margin-top:14px">Latency ranged 18–92s depending on output length and modality. On an M4 Max with 64 GB, the 7.6 GB model loads in seconds and never touched the network.</p>
+</div></section>
+
+<section><div class="wrap">
+  <h2>It really read this</h2>
+  <p>One vision task: "read this KPI dashboard and tell me the most concerning number."
+    Gemma reported all six KPIs with exact values and trends, correctly singled out the
+    <b>Activation Rate (41%, −2.0%)</b>, and recommended an onboarding-funnel audit.</p>
+  <figure>
+    <img src="assets/dashboard.png" alt="Synthetic KPI dashboard the model read">
+    <figcaption>The synthetic dashboard image fed to the model (all data fabricated).</figcaption>
+  </figure>
+</div></section>
+
+<section><div class="wrap">
+  <h2>Where each one wins</h2>
+  <div class="grid2">
+    <div class="card win">
+      <h3>✅ Local Gemma 4 12B</h3>
+      <ul>
+        <li><b>Summarizing & writing</b> — ship-ready drafts, with citations.</li>
+        <li><b>Audio</b> — native transcription + diarization, no Whisper, no cloud.</li>
+        <li><b>Vision / OCR</b> — exact dashboard reads, chart→table, scanned docs.</li>
+        <li><b>$0, private, offline</b> — for sensitive work, it never leaves the laptop.</li>
+      </ul>
+    </div>
+    <div class="card opus">
+      <h3>🔵 Claude Opus 4.8</h3>
+      <ul>
+        <li><b>Speed</b> — replies feel instant vs. 30–90s locally.</li>
+        <li><b>High-stakes correctness</b> — code you'll run, data you'll trust.</li>
+        <li><b>The hardest reasoning</b> & longest agentic chains.</li>
+        <li><b>The last 10%</b> — caught one extra anomaly the local model missed.</li>
+      </ul>
+    </div>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <h2>Head-to-head: 7 hero prompts</h2>
+  <p>Same prompt, same input, both models. <span class="note">🟰 tie · 🔵 Opus better · 🟢 local good enough</span></p>
+  <table>
+    <tr><th>Task</th><th>Gemma 4 12B (local)</th><th>Verdict</th></tr>
+    <tr><td>Stakeholder email</td><td>Scannable, all points, clear ask (30s)</td><td>🟰 / 🟢</td></tr>
+    <tr><td>Plan → JSON → risks</td><td>Valid JSON + plan + risks (72s)</td><td>🔵 Opus more specific</td></tr>
+    <tr><td>Python CSV + chart</td><td>Runnable, correct top-3 (57s)</td><td>🟰 verify either</td></tr>
+    <tr><td>Summarize long PRD</td><td>Cited section IDs, found missing spec (72s)</td><td>🟰 parity</td></tr>
+    <tr><td>Read dashboard</td><td>All 6 KPIs exact (92s)</td><td>🔵 Opus faster + 1 extra catch</td></tr>
+    <tr><td>Voice memo → actions</td><td><b>Native</b> transcription + actions (35s)</td><td>🟢 local win</td></tr>
+    <tr><td>Summarize demo video</td><td>All 5 slides from frames+audio (53s)</td><td>🟢 local win</td></tr>
+  </table>
+  <blockquote>Quality parity on 4 of 7. Opus's edge is speed and the last 10%. Gemma's
+    edge is structural: native audio &amp; video, on-device, for free.</blockquote>
+</div></section>
+
+<section><div class="wrap">
+  <h2>Reproduce it yourself</h2>
+  <p>The full workbench — code, the 22-task prompt pack, synthetic inputs, raw outputs,
+    scores, and the head-to-head — is open source. Setup takes ~30 minutes and every
+    test input is fabricated, so nothing sensitive is involved.</p>
+  <p><a class="cta" id="repo-cta" href="#">View the repo &amp; workbench →</a></p>
+  <p class="note" style="margin-top:14px">Stack: Ollama + Gradio + ffmpeg, all local. Key
+    gotcha for builders: native audio/video go through Ollama's OpenAI-compatible
+    <code>/v1</code> endpoint with <code>input_audio</code>, not the native
+    <code>/api/chat</code> field.</p>
+</div></section>
+
+<footer><div class="wrap">
+  Built with Claude Code. Uses Google Gemma 4 (Apache 2.0). A personal exploration —
+  not affiliated with or endorsed by Google or Anthropic. All test data is synthetic.
+</div></footer>
+
+</body>
+</html>
