@@ -147,7 +147,7 @@ I open-sourced the entire workbench — the code, the 22-task prompt pack, the s
 inputs, every raw output, the scoring, and the head-to-head — so you can run it in about
 30 minutes:
 
-**👉 [GitHub repo + live results](REPO_URL_HERE)**
+**👉 [GitHub repo](https://github.com/toaayushjha/gemma4-12b-pm-workbench)**  ·  **[Live results page](https://toaayushjha.github.io/gemma4-12b-pm-workbench/)**
 
 If you try it, I'd love to hear which task you'd trust to a local model first.
 

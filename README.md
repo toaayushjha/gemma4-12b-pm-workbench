@@ -10,6 +10,8 @@
 **Model:** `gemma4:12b` (released 2026-06-03, Apache 2.0) · **Engine:** Ollama (MLX on
 Apple Silicon) · **UI:** Gradio + LM Studio · **Machine:** MacBook Pro M4 Max, 64 GB.
 
+🌐 **Live results page:** https://toaayushjha.github.io/gemma4-12b-pm-workbench/
+
 📊 **Results & verdicts:** [`results/findings.md`](results/findings.md) ·
 🧮 **Raw outputs:** [`results/results.md`](results/results.md) ·
 ✍️ **Write-ups:** [`blog/`](blog/)

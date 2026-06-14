@@ -40,3 +40,9 @@ I open-sourced the whole workbench — code, the 22-task prompt pack, every outp
 What would you run on a private, local model first?
 
 #AI #ProductManagement #LocalLLM #Gemma #OpenSource #OnDeviceAI
+
+---
+
+**First-comment link** (post as a reply to your own post so reach isn't suppressed):
+Repo → https://github.com/toaayushjha/gemma4-12b-pm-workbench
+Live results → https://toaayushjha.github.io/gemma4-12b-pm-workbench/
