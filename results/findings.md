@@ -96,6 +96,13 @@ and more polished prose, and of course on **multimodal** (Qwen is text-only).
 workhorse; Gemma 4 12B for **multimodal** (vision / audio / video). Full side-by-side:
 [`compare_gemma4-12b_vs_qwen3-coder-30b.md`](compare_gemma4-12b_vs_qwen3-coder-30b.md).
 
+**Bigger isn't better here.** A 3-way test adding **Qwen3-Coder-Next (80B-A3B, MLX via
+LM Studio)** showed it's *slower* per-token than the 30B (~63 vs 110 tok/s), needs ~2.5×
+the RAM (44.9 GB — it trips LM Studio's load guardrail on 64 GB), and gave only a marginal,
+inconsistent quality edge (best regex/SQL, but skipped 2 of 3 parts of a multi-part task and
+leaked a stray Chinese token into JSON). The **30B MoE stays the sweet spot**. Details:
+[`compare_3way_text.md`](compare_3way_text.md).
+
 ## Bottom line
 
 For a PM, **Gemma 4 12B is a credible, private, free daily driver for most writing,

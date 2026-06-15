@@ -9,6 +9,9 @@ results/embed_pull.log
 results/eval_run.log
 results/bench_run.log
 results/qwen_pull.log
+results/bench_next_run.log
+results/next_pull.log
+results/workbench.log
 
 # macOS
 .DS_Store
