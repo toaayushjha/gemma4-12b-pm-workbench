@@ -126,7 +126,7 @@ def load_results() -> str:
 # --------------------------------------------------------------------------- #
 # Layout
 # --------------------------------------------------------------------------- #
-with gr.Blocks(title="Gemma 4 12B — PM Workbench", theme=gr.themes.Soft()) as demo:
+with gr.Blocks(title="Gemma 4 12B — PM Workbench") as demo:
     gr.Markdown(INTRO.format(model=gc.DEFAULT_MODEL, status=status_line()))
 
     with gr.Tab("💬 Chat"):
@@ -136,7 +136,6 @@ with gr.Blocks(title="Gemma 4 12B — PM Workbench", theme=gr.themes.Soft()) as 
             temp_sl = gr.Slider(0.0, 1.5, value=0.7, step=0.1, label="Temperature")
         gr.ChatInterface(
             fn=chat_respond,
-            type="messages",
             multimodal=True,
             additional_inputs=[model_dd, think_tg, temp_sl],
             description="Pick a model (Gemma = multimodal; Qwen-Coder = faster text/code). "
@@ -170,4 +169,4 @@ with gr.Blocks(title="Gemma 4 12B — PM Workbench", theme=gr.themes.Soft()) as 
 
 
 if __name__ == "__main__":
-    demo.launch(inbrowser=True)
+    demo.launch(inbrowser=True, theme=gr.themes.Soft())
