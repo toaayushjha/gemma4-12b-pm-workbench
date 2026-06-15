@@ -124,19 +124,24 @@
 </div></section>
 
 <section><div class="wrap">
-  <h2>Going faster: a second model for the latency tax</h2>
-  <p>The biggest latency win wasn't a setting — it was adding a second local model for
-    text. <b>Qwen3‑Coder 30B</b> (a ~3B-active Mixture-of-Experts) ran <b>~5× faster</b>
-    than Gemma 4 12B on the 14 text tasks, and matched or beat it on code, JSON, and
-    summarizing.</p>
+  <h2>The local model line-up — what I'd actually run</h2>
+  <p>Beyond Gemma, I benchmarked two Qwen models locally on the same 14 text tasks to find
+    the best free, private workhorse — and to see whether a bigger model was worth it.
+    Bigger turned out <em>not</em> to be better.</p>
   <table>
-    <tr><th>Model</th><th>Avg latency</th><th>Avg tok/s</th><th>Modalities</th></tr>
-    <tr><td>Gemma 4 12B</td><td>28.3s</td><td>46</td><td>text + image + audio + video</td></tr>
-    <tr><td><b>Qwen3‑Coder 30B (MoE)</b></td><td><b>6.0s</b></td><td><b>110</b></td><td>text only</td></tr>
+    <tr><th>Model</th><th>Runtime</th><th>Avg latency</th><th>Avg tok/s</th><th>RAM</th><th>Modalities</th></tr>
+    <tr><td>Gemma 4 12B</td><td>Ollama</td><td>28.3s</td><td>46</td><td>7.6 GB</td><td>text + image + audio + video</td></tr>
+    <tr style="background:var(--green-bg)"><td><b>Qwen3‑Coder 30B (MoE)</b> ⭐</td><td>Ollama</td><td><b>6.0s</b></td><td><b>110</b></td><td>18 GB</td><td>text only</td></tr>
+    <tr><td>Qwen3‑Coder‑Next 80B‑A3B</td><td>LM Studio (MLX)</td><td>4.9s</td><td>63</td><td>44.9 GB</td><td>text only</td></tr>
   </table>
-  <blockquote>The setup that emerged: <b>Qwen3‑Coder 30B</b> as the fast, free workhorse
-    for text / code / agents; <b>Gemma 4 12B</b> for anything multimodal. Together they
-    cover most daily PM work locally — at $0.</blockquote>
+  <p class="note">The 80B was <i>slower</i> per-token than the 30B and needed ~2.5× the RAM
+    (it trips LM Studio's 64 GB load guardrail) — for only a marginal, inconsistent quality
+    edge. It even skipped part of a multi-part task and leaked a stray non-English token into
+    JSON. On a 64 GB laptop, the 30B MoE is the sweet spot.</p>
+  <blockquote><b>My recommendation:</b> run <b>Qwen3‑Coder 30B (MoE)</b> for most daily
+    text &amp; code — it's ~5× faster than Gemma and matches it on quality — and keep
+    <b>Gemma 4 12B</b> for <b>audio &amp; vision</b> (the Qwen coders are text-only).
+    Reserve Claude Opus 4.8 for the hardest 10–20%. Free, private, and it covers the rest.</blockquote>
 </div></section>
 
 <section><div class="wrap">
