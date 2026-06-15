@@ -26,6 +26,10 @@ Apple Silicon) · **UI:** Gradio + LM Studio · **Machine:** MacBook Pro M4 Max,
 - The interesting, non-obvious finding for builders: **native audio/video input
   works through Ollama's OpenAI-compatible `/v1/chat/completions` endpoint using
   `input_audio` content parts** — *not* the native `/api/chat` `images`-style field.
+- **Cutting the latency:** swapping in a MoE coder model (**Qwen3-Coder 30B**) ran text
+  tasks **~5× faster** with equal-or-better quality — see
+  [`results/compare_gemma4-12b_vs_qwen3-coder-30b.md`](results/compare_gemma4-12b_vs_qwen3-coder-30b.md).
+  The practical local kit: **Qwen3-Coder for text/code, Gemma 4 12B for multimodal.**
 - Per-task verdicts (where local is "good enough" vs. where I'd still reach for
   Opus) are in [`results/findings.md`](results/findings.md).
 

@@ -124,6 +124,22 @@
 </div></section>
 
 <section><div class="wrap">
+  <h2>Going faster: a second model for the latency tax</h2>
+  <p>The biggest latency win wasn't a setting — it was adding a second local model for
+    text. <b>Qwen3‑Coder 30B</b> (a ~3B-active Mixture-of-Experts) ran <b>~5× faster</b>
+    than Gemma 4 12B on the 14 text tasks, and matched or beat it on code, JSON, and
+    summarizing.</p>
+  <table>
+    <tr><th>Model</th><th>Avg latency</th><th>Avg tok/s</th><th>Modalities</th></tr>
+    <tr><td>Gemma 4 12B</td><td>28.3s</td><td>46</td><td>text + image + audio + video</td></tr>
+    <tr><td><b>Qwen3‑Coder 30B (MoE)</b></td><td><b>6.0s</b></td><td><b>110</b></td><td>text only</td></tr>
+  </table>
+  <blockquote>The setup that emerged: <b>Qwen3‑Coder 30B</b> as the fast, free workhorse
+    for text / code / agents; <b>Gemma 4 12B</b> for anything multimodal. Together they
+    cover most daily PM work locally — at $0.</blockquote>
+</div></section>
+
+<section><div class="wrap">
   <h2>It really read this</h2>
   <p>One vision task: "read this KPI dashboard and tell me the most concerning number."
     Gemma reported all six KPIs with exact values and trends, correctly singled out the

@@ -30,6 +30,7 @@ ROOT = pathlib.Path(__file__).resolve().parent
 TASKS = json.loads((ROOT / "prompts" / "tasks.json").read_text())["tasks"] \
     if (ROOT / "prompts" / "tasks.json").exists() else []
 RESULTS_MD = ROOT / "results" / "results.md"
+CHAT_MODELS = [m for m in gc.list_models() if "embed" not in m.lower()] or [gc.DEFAULT_MODEL]
 
 INTRO = """
 # 🧪 Gemma 4 12B — PM Workbench
@@ -49,7 +50,7 @@ def status_line() -> str:
 # --------------------------------------------------------------------------- #
 # Chat tab
 # --------------------------------------------------------------------------- #
-def chat_respond(message: dict, history: list, think: bool, temp: float):
+def chat_respond(message: dict, history: list, model: str, think: bool, temp: float):
     text = message.get("text", "") if isinstance(message, dict) else str(message)
     files = message.get("files", []) if isinstance(message, dict) else []
     images = [f for f in files if str(f).lower().endswith(
@@ -58,13 +59,15 @@ def chat_respond(message: dict, history: list, think: bool, temp: float):
     partial = ""
     try:
         for partial in gc.generate_stream(
-            text, images=images or None, think=think, temperature=temp):
+            text, images=images or None, model=model, think=think, temperature=temp):
             yield partial
     except Exception as exc:  # noqa: BLE001
         yield f"⚠️ {exc}"
         return
     dt = time.time() - t0
-    yield partial + f"\n\n_⏱ {dt:.1f}s · 🖼 {len(images)} image(s) · think={think}_"
+    note = "  ⚠️ (this model is text-only; image ignored)" if (
+        images and "gemma" not in model.lower()) else ""
+    yield partial + f"\n\n_⏱ {dt:.1f}s · {model} · 🖼 {len(images)} image(s){note}_"
 
 
 # --------------------------------------------------------------------------- #
@@ -128,14 +131,16 @@ with gr.Blocks(title="Gemma 4 12B — PM Workbench", theme=gr.themes.Soft()) as 
 
     with gr.Tab("💬 Chat"):
         with gr.Row():
+            model_dd = gr.Dropdown(CHAT_MODELS, value=gc.DEFAULT_MODEL, label="Model")
             think_tg = gr.Checkbox(label="Thinking Mode", value=False)
             temp_sl = gr.Slider(0.0, 1.5, value=0.7, step=0.1, label="Temperature")
         gr.ChatInterface(
             fn=chat_respond,
             type="messages",
             multimodal=True,
-            additional_inputs=[think_tg, temp_sl],
-            description="Type a message. Attach an image with the 📎 clip to test vision.",
+            additional_inputs=[model_dd, think_tg, temp_sl],
+            description="Pick a model (Gemma = multimodal; Qwen-Coder = faster text/code). "
+                        "Attach an image with the 📎 clip to test vision.",
         )
 
     with gr.Tab("🧪 Benchmark"):

@@ -7,6 +7,8 @@ __pycache__/
 results/pull.log
 results/embed_pull.log
 results/eval_run.log
+results/bench_run.log
+results/qwen_pull.log
 
 # macOS
 .DS_Store

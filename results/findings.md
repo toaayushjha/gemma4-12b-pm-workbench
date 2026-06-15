@@ -83,6 +83,19 @@ risk?"* — by pulling from both the meeting transcript and the PRD, **with cita
 and honestly noting the docs list five risks rather than one (no hallucinated "single"
 risk). A private, on-device knowledge assistant over your own files, for $0.
 
+## Update: the latency lever — Qwen3-Coder 30B (MoE)
+
+The biggest fix for the latency tax wasn't a Gemma setting — it was a *different model*
+for text. On the 14 text tasks, **Qwen3-Coder 30B (a ~3B-active MoE) ran ~5× faster**
+than Gemma 4 12B (avg **6.0s vs 28.3s**, **110 vs 46 tok/s**) and was **equal-or-better
+on code, JSON/agentic, and summarizing** — it even produced a correct anchored regex
+where Gemma dropped the `^…$` anchors this run. Gemma kept the edge on RICE methodology
+and more polished prose, and of course on **multimodal** (Qwen is text-only).
+
+**The setup that emerged:** Qwen3-Coder 30B as the fast, free **text / code / agent**
+workhorse; Gemma 4 12B for **multimodal** (vision / audio / video). Full side-by-side:
+[`compare_gemma4-12b_vs_qwen3-coder-30b.md`](compare_gemma4-12b_vs_qwen3-coder-30b.md).
+
 ## Bottom line
 
 For a PM, **Gemma 4 12B is a credible, private, free daily driver for most writing,

@@ -1,0 +1,15 @@
+task_id,category,title,gemma4:12b_latency_s,gemma4:12b_tok_s,gemma4:12b_out_tok,qwen3-coder:30b_latency_s,qwen3-coder:30b_tok_s,qwen3-coder:30b_out_tok
+dw1,01_daily_workflows,Stakeholder update email,21.15,46.5,793,10.6,115.6,168
+dw2,01_daily_workflows,Messy notes -> action items table,42.1,45.6,1731,5.76,108.0,291
+dw3,01_daily_workflows,Rewrite blunt Slack msg for execs,23.48,46.5,930,3.28,113.0,48
+dw4,01_daily_workflows,RICE prioritization,42.88,45.9,1807,5.76,109.6,313
+or1,02_orchestration,Goal -> plan -> JSON tasks -> risks,33.66,46.3,1393,11.76,108.1,959
+or2,02_orchestration,Strict JSON extraction (schema),14.58,46.3,511,3.53,110.5,70
+or3,02_orchestration,Tool-routing decision (agentic),20.34,45.8,768,4.37,111.5,166
+lc1,03_light_coding,Python: parse CSV + chart,38.99,45.2,1575,6.53,108.5,365
+lc2,03_light_coding,SQL from schema,34.14,45.3,1389,4.28,109.9,155
+lc3,03_light_coding,Explain + refactor snippet,21.87,45.8,841,4.15,109.8,169
+lc4,03_light_coding,Regex + test cases,22.95,46.9,912,5.38,109.3,273
+sum1,04_summarizing,Summarize long PRD (256K ctx),40.43,44.1,1405,8.77,99.7,417
+sum2,04_summarizing,Condense support thread,19.01,46.1,663,4.23,117.0,114
+sum3,04_summarizing,Extract decisions from transcript,21.29,43.8,687,6.01,106.9,299
